@@ -1,7 +1,7 @@
 //Dependencies
 const express = require('express')
 const methodOverride = require('method-override')
-
+const mongoose = require('mongoose')
 
 // Configuaration
 require('dotenv').config()
@@ -31,6 +31,9 @@ app.use('/breads', breadsController)
 app.get('*', (req, res) => {
     res.send('404')
 })
+
+//Mongo-Mongoose Connection
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
 
 //Listen
 app.listen(PORT, () => {
