@@ -12,7 +12,6 @@ function Index ({breads, title}) {
                         <a href={`/breads/${bread.id}`}>
                             {bread.name}
                         </a>
-
                     </li>
                 )
             })}
@@ -20,7 +19,6 @@ function Index ({breads, title}) {
             <div className="newButton">
                 <a href="/breads/new"><button>Add a new bread</button></a>
             </div>
-
         </Default>
     )
 }

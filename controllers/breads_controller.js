@@ -1,6 +1,7 @@
 const express = require('express')
 const breads = express.Router()
 const Bread = require('../models/bread.js')
+const Baker = require('../models/baker.js')
 const seeds = require('../seeds.js')
 
 // INDEX - always first
@@ -20,11 +21,16 @@ breads.get('/', (req, res) => {
         })
 })
 
-
-// NEW
+//NEW
 breads.get('/new', (req, res) => {
-    res.render('new')
+    Baker.find()
+        .then(foundBakers => {
+            res.render('new', {
+                bakers: foundBakers
+            })
+        })
 })
+
 
 // SHOW
 // breads.get('/:arrayIndex', (req, res) => {
@@ -39,9 +45,9 @@ breads.get('/new', (req, res) => {
 // })
 breads.get('/:id', (req, res) => {
     Bread.findById(req.params.id)
+        .populate('baker')
         .then(foundBread => {
             const bakedBy = foundBread.getBakedBy() 
-            console.log(bakedBy)
             res.render('show', {
                 bread: foundBread
             })
@@ -116,19 +122,25 @@ breads.put('/:id', (req, res) => {
 //         index: req.params.indexArray
 //     })
 // })
+// EDIT
 breads.get('/:id/edit', (req, res) => {
-    Bread.findById(req.params.id) .then(foundBread => { 
-        res.render('edit', {
-            bread: foundBread 
+    Baker.find()
+        .then(foundBakers => {
+            Bread.findById(req.params.id)
+                .then(foundBread => {
+                res.render('edit', {
+                    bread: foundBread, 
+                    bakers: foundBakers 
+                })
+            })
         })
-    })
 })
+
 
 breads.get('/data/seed', (req, res) => {
     Bread.insertMany(seeds).then(createdBreads => {
             res.redirect('/breads')
         })
 })
-
 
 module.exports = breads
