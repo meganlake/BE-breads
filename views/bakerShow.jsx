@@ -1,5 +1,5 @@
 const React = require('react')
-const Default = require('.layouts/Default')
+const Default = require('./layouts/Default')
 
 function Show ({ baker }) {
     return (
@@ -21,9 +21,14 @@ function Show ({ baker }) {
             <form action={`/bakers/${baker.id}?_method=DELETE`} method="POST">
                 <input type="submit" value="DELETE BAKER"/>
             </form>
-
         </Default>
     )
 }
 
 module.exports = Show
+
+// Model.find()
+//     .populate({
+//         path: 'fieldToPopulate',
+//         options: { limit: 2 }
+//     })
