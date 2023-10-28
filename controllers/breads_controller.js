@@ -7,7 +7,7 @@ const seeds = require('../seeds.js')
 //Index
 breads.get('/', async (req, res) => {
     const foundBakers = await Baker.find().lean() 
-    const foundBreads = await Bread.find().limit(2).lean() 
+    const foundBreads = await Bread.find().limit(20).lean() 
     console.log(foundBreads)
     res.render('index', {
         breads: foundBreads,
@@ -15,7 +15,6 @@ breads.get('/', async (req, res) => {
         title: 'Index Page'
     })
 })
-
 
 
 //NEW
@@ -30,14 +29,17 @@ breads.get('/new', (req, res) => {
 
 
 // SHOW
-breads.get('/', async (req, res) => {
-    const foundBakers = await Baker.find()
-    const foundBreads = await Bread.find().limit(2)
-    res.render('index', {
-        breads: foundBreads,
-        bakers: foundBakers,
-        title: 'Index Page'
-    })
+breads.get('/:id', (req, res) => {
+    Bread.findById(req.params.id)
+        .populate('baker')
+        .then(foundBread => {
+            res.render('show', {
+                bread: foundBread
+            })
+        })
+        .catch(err => {
+            res.send('404')
+        })
 })
 
 
