@@ -4,6 +4,13 @@ const Bread = require('../models/bread.js')
 const Baker = require('../models/baker.js')
 const seeds = require('../seeds.js')
 
+//Seed
+breads.get('/data/seed', (req, res) => {
+    Bread.insertMany(seeds).then(createdBreads => {
+            res.redirect('/breads')
+        })
+})
+
 //Index
 breads.get('/', async (req, res) => {
     const foundBakers = await Baker.find().lean() 
@@ -92,10 +99,5 @@ breads.get('/:id/edit', (req, res) => {
 })
 
 
-breads.get('/data/seed', (req, res) => {
-    Bread.insertMany(seeds).then(createdBreads => {
-            res.redirect('/breads')
-        })
-})
 
 module.exports = breads
